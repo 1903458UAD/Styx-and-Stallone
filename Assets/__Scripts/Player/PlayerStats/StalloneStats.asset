@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a8f0bc875b2e8f4ea1f5bf67decfdd3, type: 3}
   m_Name: StalloneStats
   m_EditorClassIdentifier: 
-  maxHearts: 5
-  hearts: 5
+  maxHearts: 6
+  hearts: 6
   attack: 150
