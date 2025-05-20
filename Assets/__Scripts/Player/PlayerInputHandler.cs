@@ -23,4 +23,9 @@ public class PlayerInputHandler : MonoBehaviour
     {
         playerActions.SetInputVector(context.ReadValue<Vector2>());
     }
+
+    public void OnJump(CallbackContext context)
+    {
+        playerActions.SetInputJumpBool(true);
+    }
 }
