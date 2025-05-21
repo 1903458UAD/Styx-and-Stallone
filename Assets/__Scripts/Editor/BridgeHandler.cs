@@ -7,16 +7,16 @@ public class BridgeHandler : EditorWindow
 {
     #region Variables
     public GameObject bridgePrefab;
+    private GameObject anchorPlatform;
+    private GameObject rotatePlatform;
+    private GameObject rotatePar;
+    private GameObject lastObject;
 
     private float bridgeLength;
     private float segmentLength;
 
     private int required;
 
-    private Vector3 startPoint;
-    private Vector3 endPoint;
-
-    private bool firstSelected = false;
     #endregion
 
     [MenuItem("Tools/Bridge Connector")]
@@ -31,43 +31,33 @@ public class BridgeHandler : EditorWindow
 
         if (GUILayout.Button("Reset Selection"))
         {
-            firstSelected = false;
+            anchorPlatform = null;
+            rotatePlatform = null;
         }
-    }
 
-    private void OnSceneGUI(SceneView sceneView)
-    {
-        Event eventBuild = Event.current;
-        if (eventBuild.type == EventType.MouseDown && eventBuild.button == 0)
+        anchorPlatform = (GameObject)EditorGUILayout.ObjectField("Anchor", anchorPlatform, typeof(GameObject), true);
+        rotatePlatform = (GameObject)EditorGUILayout.ObjectField("Rotate Target", rotatePlatform, typeof(GameObject), true);
+
+        if (GUILayout.Button("Rotate") && anchorPlatform != null && rotatePlatform != null)
         {
-            Ray ray = HandleUtility.GUIPointToWorldRay(eventBuild.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (!firstSelected)
-                {
-                    startPoint = hit.point;
-                    firstSelected = true;
-                }
-                else
-                {
-                    endPoint = hit.point;
-                    CreateBridge(startPoint, endPoint);
-                    firstSelected = false;
-                }
-                eventBuild.Use();
-            }
+            AlignPlatforms();
+        }
+
+        if (GUILayout.Button("Create Bridge") && anchorPlatform != null && rotatePlatform != null)
+        {
+            lastObject = null;
+            CreateBridge(anchorPlatform.transform.position, rotatePlatform.transform.position);
         }
     }
 
-    //Handles GUI visibility
-    private void OnEnable()
+    private void AlignPlatforms()
     {
-        SceneView.duringSceneGui += OnSceneGUI;
-    }
-
-    private void OnDisable()
-    {
-        SceneView.duringSceneGui -= OnSceneGUI;
+        Vector3 localDirection = anchorPlatform.transform.position - rotatePlatform.transform.position;
+        rotatePar = rotatePlatform.transform.parent.gameObject;
+        Vector3 globalDirection = rotatePar.transform.TransformDirection(localDirection);
+        Quaternion rotation = Quaternion.LookRotation(globalDirection, Vector3.up);
+        
+        rotatePar.transform.rotation = rotation;
     }
 
     public void CreateBridge(Vector3 startPoint, Vector3 endPoint)
@@ -79,14 +69,19 @@ public class BridgeHandler : EditorWindow
         //Create a parent container
         GameObject bridgeParent = new GameObject ("Bridge");
 
-        for (int i = 0; i < required; i++)
+        for (int i = 0; i < (required +1); i++)
         {
             Vector3 position = Vector3.Lerp(startPoint, endPoint, (float)i / required);
             GameObject segment = (GameObject)PrefabUtility.InstantiatePrefab(bridgePrefab);
             segment.transform.position = position;
             segment.transform.rotation = Quaternion.LookRotation(endPoint - startPoint);
             segment.transform.SetParent(bridgeParent.transform);
-            Undo.RegisterCreatedObjectUndo(segment, "Created Bridge Segment");
+            if(lastObject != null)
+            {
+                segment.GetComponent<FixedJoint>().connectedBody = lastObject.GetComponent<Rigidbody>();
+            }
+            
+            lastObject = segment;
         }
     }
 }
