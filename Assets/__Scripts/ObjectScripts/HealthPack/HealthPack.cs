@@ -15,7 +15,7 @@ public class HealthPack : MonoBehaviour
         if (playerStatsHolder != null)
         {
 
-            playerStatsHolder.Stats.RestoreHeart(healAmount);
+            playerStatsHolder.RestoreHeart(healAmount);
             Debug.Log($"{other.name} healed {healAmount} health. Current hearts: {playerStatsHolder.Stats.Hearts}");
 
 

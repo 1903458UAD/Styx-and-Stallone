@@ -13,7 +13,7 @@ public class DamageObstacle : MonoBehaviour
 
         if (playerStatsHolder != null)
         {
-            playerStatsHolder.Stats.DamageHeart(damageAmount);
+            playerStatsHolder.DamageHeart(damageAmount);
             Debug.Log($"{other.name} took {damageAmount} damage. Remaining hearts: {playerStatsHolder.Stats.Hearts}");
         
         }
