@@ -7,14 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_brown
+  m_Name: M_brown_toon
   m_Shader: {fileID: -6465566751694194690, guid: b31ea42934f52ac448824d8c9a57a11a,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: b4be3daee626fc74d9fd0ff2fa851b2e, type: 2}
+  m_Parent: {fileID: 2100000, guid: 600d06323845fd74f8545dee99373a66, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _NORMALMAP
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -28,10 +27,12 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - Color_a2697f6422104fac8dbfa6b556508922: {r: 0.2578616, g: 0.18101884, b: 0.08838648,
+        a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &8266115467230881407
+--- !u!114 &3093745264489782407
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
