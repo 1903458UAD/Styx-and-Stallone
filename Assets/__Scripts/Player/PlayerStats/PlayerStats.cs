@@ -27,4 +27,9 @@ public class PlayerStats : ScriptableObject
         hearts = Mathf.Min(maxHearts, hearts + amount);
     }
 
+    public void ResetStats()
+    {
+        hearts = maxHearts;
+    }
+
 }
