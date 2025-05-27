@@ -73,6 +73,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+    m_ActionId: c13cd9c2-1edc-4b35-becc-43e0772765a4
+    m_ActionName: 'Player/Move[/XInputControllerWindows/leftStick]'
+  - m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 7564672523173456327}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
         m_MethodName: OnJump
@@ -85,10 +89,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: c13cd9c2-1edc-4b35-becc-43e0772765a4
-    m_ActionName: 'Player/Move[/XInputControllerWindows/leftStick]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: d2a9f690-2c29-4a9b-a443-a7ed2687f62a
     m_ActionName: 'Player/Jump[/XInputControllerWindows/buttonSouth]'
   - m_PersistentCalls:

@@ -97,6 +97,18 @@ public class PlayerActions : MonoBehaviour
         fallTimeoutDelta = fallTimeout;
     }
 
+    void OnDrawGizmosSelected()
+    {
+        // Set the Gizmo color based on grounded state
+        Gizmos.color = grounded ? Color.green : Color.red;
+
+        // Calculate sphere position (same as your grounded check)
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
+
+        // Draw a wireframe sphere at the grounded check position with groundedRadius
+        Gizmos.DrawWireSphere(spherePosition, groundedRadius);
+    }
+
     public int GetPlayerIndex()
     {
         return playerIndex;
@@ -106,8 +118,8 @@ public class PlayerActions : MonoBehaviour
     {
         _hasAnimator = TryGetComponent(out _animator);
 
-       // JumpAndGravity();
-       // GroundedCheck();
+        GroundedCheck();
+        JumpAndGravity();
         Move();
     }
 
@@ -122,47 +134,81 @@ public class PlayerActions : MonoBehaviour
 
     private void GroundedCheck()
     { 
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
 
-        grounded = characterController.isGrounded;
+        Debug.Log($"Grounded: {grounded} ");
 
-        Debug.Log(grounded);
-        
+        if (_hasAnimator)
+        {
+            _animator.SetBool(_animIDGrounded, grounded);
+        }
     }
 
     private void JumpAndGravity()
     {
         if (grounded)
         {
-            // update animator if using character
+            fallTimeoutDelta = fallTimeout;
+
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDJump, false);
                 _animator.SetBool(_animIDFreeFall, false);
             }
 
-            if (inputJump)
+            if (verticalVelocity < 0.0f)
             {
-                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                inputJump = false;
- 
-                if (_hasAnimator) _animator.SetBool(_animIDJump, true);
-            } 
-        }
-
-        else
-        {
-            if (_hasAnimator)
-            {
-                _animator.SetBool(_animIDFreeFall, true);
+                verticalVelocity = -2f;
             }
 
-            verticalVelocity += gravity * Time.deltaTime;
+            if (inputJump && jumpTimeoutDelta <= 0.0f)
+            {
+                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                if (_hasAnimator)
+                {
+                    _animator.SetBool(_animIDJump, true);
+                }
+
+                inputJump = false;
+            }
+
+            if (jumpTimeoutDelta >= 0.0f)
+            {
+                jumpTimeoutDelta -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            jumpTimeoutDelta = jumpTimeout;
+
+            if (fallTimeoutDelta >= 0.0f)
+            {
+                fallTimeoutDelta -= Time.deltaTime;
+            }
+            else
+            {
+                if (_hasAnimator)
+                {
+                    _animator.SetBool(_animIDFreeFall, true);
+                }
+            }
+
+            inputJump = false;
         }
 
-        characterController.Move(new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
+        verticalVelocity += gravity * Time.deltaTime;
+
+        if (!grounded)
+        {
+            if (verticalVelocity < -terminalVelocity)
+            {
+                verticalVelocity = -terminalVelocity;
+            }
+        }
     }
+
 
     public void SetInputVector(Vector2 direction)
     {
@@ -171,10 +217,7 @@ public class PlayerActions : MonoBehaviour
 
     public void SetInputJumpBool(bool jump)
     {
-        if (grounded)
-        {
-            inputJump = jump;
-        }
+        inputJump = jump;
     }
 
     private void Move()
@@ -199,8 +242,10 @@ public class PlayerActions : MonoBehaviour
         if (animationBlend < 0.01f) animationBlend = 0f;
 
         Vector3 velocity = moveDirection * speed;
+        Vector3 totalMove = velocity + new Vector3(0, verticalVelocity, 0);
 
-        characterController.Move(velocity * Time.deltaTime);
+        characterController.Move(totalMove * Time.deltaTime);
+
 
         if (_hasAnimator)
         {
