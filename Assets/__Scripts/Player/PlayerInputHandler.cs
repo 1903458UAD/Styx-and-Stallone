@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.InputSystem.InputAction;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class PlayerInputHandler : MonoBehaviour
        playerInput = GetComponent<PlayerInput>();
        var players = FindObjectsOfType<PlayerActions>();
        var index = playerInput.playerIndex;
-        playerActions = players.FirstOrDefault(p => p.GetPlayerIndex() == index);
+       playerActions = players.FirstOrDefault(p => p.GetPlayerIndex() == index);
     }
 
     public void OnMove(CallbackContext context)
@@ -26,6 +28,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnJump(CallbackContext context)
     {
-        playerActions.SetInputJumpBool(true);
+        if (context.started)
+        {
+            playerActions.SetInputJumpBool(true);
+        }
+
+        Debug.Log(context.started);
     }
 }
