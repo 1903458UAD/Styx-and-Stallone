@@ -5,15 +5,14 @@ using UnityEngine;
 public class HammerScript : MonoBehaviour
 {
 
-    public Animator anim;
+    public Animator animator;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hit");
-        if(other.CompareTag("Player") && other.TryGetComponent<Animator>(out anim))
+        if(other.CompareTag("Player") && other.TryGetComponent<Animator>(out animator))
         {
-            anim = other.GetComponent<Animator>();
-            anim.enabled = false;
+            animator = other.GetComponent<Animator>();
+            animator.enabled = false;
             StartCoroutine(Reanimate());
         }
     }
@@ -22,6 +21,6 @@ public class HammerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        anim.enabled = true;
+        animator.enabled = true;
     }
 }
