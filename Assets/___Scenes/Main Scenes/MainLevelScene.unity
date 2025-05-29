@@ -16541,7 +16541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdab5ebd874615e4d9997803e86f3aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackKey: 323
+  attackKey: 332
   attackRange: 2
   attackAngle: 45
   attackDamage: 1
@@ -28848,7 +28848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdab5ebd874615e4d9997803e86f3aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackKey: 332
+  attackKey: 323
   attackRange: 2
   attackAngle: 45
   attackDamage: 1
