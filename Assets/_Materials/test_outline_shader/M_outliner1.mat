@@ -21,9 +21,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_outliner1
-  m_Shader: {fileID: -6465566751694194690, guid: 0e234748ff1cbdc49956ca33c05b92f2,
+  m_Shader: {fileID: -6465566751694194690, guid: f618e4ae91355e346802fac4c49eb6c8,
     type: 3}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 2100000, guid: 27b06babbe55922449589606e5678fc7, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -37,25 +37,10 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _Scale: 1.01
-    m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
+    - _outlinethickness: 0.1
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
